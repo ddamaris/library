@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/check_mate.dir/check_mate.c.o  -o check_mate.exe -Wl,--out-implib,libcheck_mate.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

@@ -5,7 +5,7 @@
 .DS_Store
 .vscode
 cmake-build-debug
-CMakeLists.txt
+cmake-build-debug-cygwin
 
 # Prerequisites
 *.d
