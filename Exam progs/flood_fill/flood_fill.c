@@ -44,7 +44,8 @@ void	print_tab(char **a, t_point size)
 	}
 }
 
-void	flood_fill(char **tab, t_point size, t_point begin) {
+void	flood_fill(char **tab, t_point size, t_point begin)
+{
 	int i;
 	char c;
 
@@ -53,19 +54,23 @@ void	flood_fill(char **tab, t_point size, t_point begin) {
 	tab[begin.y][begin.x] = 'F';
 	print_tab(tab, size);
 	printf("\n");
-	if (begin.y > 0 && tab[begin.y - 1][begin.x] == c) {
+	if (begin.y > 0 && tab[begin.y - 1][begin.x] == c)
+	{
 		begin.y -= 1;
 		flood_fill(tab, size, begin);
 	}
-	if (begin.y < size.y && tab[begin.y + 1][begin.x] == c) {
+	if (begin.y < size.y && tab[begin.y + 1][begin.x] == c)
+	{
 		begin.y += 1;
 		flood_fill(tab, size, begin);
 	}
-	if (begin.x > 0 && tab[begin.y][begin.x - 1] == c) {
+	if (begin.x > 0 && tab[begin.y][begin.x - 1] == c)
+	{
 		begin.x -= 1;
 		flood_fill(tab, size, begin);
 	}
-	if (begin.x < size.x && tab[begin.y][begin.x + 1] == c) {
+	if (begin.x < size.x && tab[begin.y][begin.x + 1] == c)
+	{
 		begin.x += 1;
 		flood_fill(tab, size, begin);
 	}

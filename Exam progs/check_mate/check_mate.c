@@ -37,7 +37,7 @@ int		checkmate(int ac, char **av)
 		{
 			if (i < x && (av[y - i - 1][x - i - 1] == 'B' || av[y - i - 1][x - i - 1] == 'Q'))
 				return (0);
-			if (x + i < ac && (av[y - i - 1][x + i + 1] == 'B' || av[y - i - 1][x+ i + 1] == 'Q'))
+			if (x + i < ac && (av[y - i - 1][x + i + 1] == 'B' || av[y - i - 1][x + i + 1] == 'Q'))
 				return (0);
 		}
 		if (y + i < ac)
