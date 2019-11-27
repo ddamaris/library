@@ -63,26 +63,34 @@ static short			ft_hend_digit(t_struct *list, intmax_t digit, int *len)
 {
 	if (list->zero == '0' && list->prec == -1)
 		list->morezero = '0';
+	
 	list->size = ft_strlen_digit(list, digit);
+	
 	if (digit < 0 && list->morezero == '0')
 		*len += ft_print_char('-');
 	else if (digit >= 0 && list->morezero == '0' && list->plus == '+')
 		*len += ft_print_char('+');
 	else if (list->morezero == '0' && list->blank == ' ')
 		*len += ft_print_char(' ');
+	
 	while (list->minus != '-' && list->width > list->size)
 		(*len += ft_print_char(list->morezero)) && list->width--;
+	
 	if (list->plus == '+' && digit >= 0 && list->morezero != '0')
 		*len += ft_print_char('+');
 	else if (digit < 0 && list->morezero == ' ' && list->morezero != '0')
 		*len += ft_print_char('-');
 	else if (list->blank == ' ' && digit >= 0 && list->morezero != '0')
 		*len += ft_print_char(' ');
+	
 	while (list->prec != -1 && list->prec > 0)
 		(*len += ft_print_char('0')) && list->prec--;
+	
 	*len += ft_print_digit(digit, list);
+	
 	while (list->width > list->size && list->minus == '-')
 		(*len += ft_print_char(' ')) && list->width--;
+	
 	return (*len);
 }
 

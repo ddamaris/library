@@ -2,5 +2,7 @@
 
 int	main()
 {
-    ft_printf("%s, %d", "Hello", 42);
+	int d = 42;
+	char *s = "Hello";
+    ft_printf("%d, %s", d, s);
 }
