@@ -1,78 +1,82 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ddamaris <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/24 14:45:26 by ddamaris          #+#    #+#             */
+/*   Updated: 2019/11/13 18:23:12 by ddamaris         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void			define_list(t_struct *list)
+void	init_flst(t_struct *f_lst)
 {
-	list->plus = 0;
-	list->morezero = ' ';
-	list->minus = 0;
-	list->hash = 0;
-	list->zero = 0;
-	list->blank = 0;
-	list->width = -1;
-	list->prec = -1;
-	list->h = 0;
-	list->hh = 0;
-	list->l = 0;
-	list->ll = 0;
-	list->z = 0;
-	list->j = 0;
-	list->len = 0;
-	list->largel = 0;
+	f_lst->minus = 0;
+	f_lst->hash = 0;
+	f_lst->zero = ' ';
+	f_lst->width = 0;
+	f_lst->prec = -1;
+	f_lst->hl = 0;
+	f_lst->p = 0;
+	f_lst->f_type = 0;
+	f_lst->base = 10;
+	f_lst->size = 0;
+	f_lst->len = 0;
+	f_lst->sign = 0;
+	f_lst->zj = 0;
 }
 
-int				continue_digit(const char *format, int i)
+int		ft_parse(const char *str, t_struct *f_lst)
 {
-	while (format[i] >= 48 && format[i] <= 57)
-		i++;
-	return (i);
-}
+	int		length;
 
-int				check_flags(const char *format, int i)
-{
-	if (format[i] == '#' || format[i] == '0' || format[i] == '-'
-		|| format[i] == '+' || format[i] == ' ')
-		return (1);
-	else
-		return (0);
-}
-
-int				check_format(const char *format, int i)
-{
-	if (format[i] == '#' || format[i] == '0' || format[i] == '-'
-		|| format[i] == '+' || format[i] == ' ' || format[i] == '.'
-		|| (format[i] >= 48 && format[i] <= 57) || format[i] == 'h'
-		|| format[i] == 'l' || format[i] == 'L')
-		return (1);
-	else
-		return (0);
-}
-
-int				ft_printf(const char *format, ...)
-{
-	int			i;
-	int			len;
-	va_list		va;
-	t_struct	list;
-
-	i = 0;
-	len = 0;
-	va_start(va, format);
-	while (format[i] != '\0')
+	length = 0;
+	init_flst(f_lst);
+	while ((length = is_flag(str, f_lst)) != 0)
 	{
-		if (format[i] != '%')
-			len = len + print_char(format, i);
-		else
-		{
-			if (format[i] == '%' && format[i + 1] == '\0')
-				return (0);
-			i++;
-			len = len + pa(format, i, va, &list);
-			i = i + list.len;
-			list.len = 0;
-		}
-		i++;
+		f_lst->len += length;
+		str += length;
 	}
-	va_end(va);
-	return (len);
+	if (*str != '\0')
+	{
+		f_lst->f_type = *str;
+		f_lst->len++;
+	}
+	f_lst->len++;
+	length = ft_work_out(f_lst);
+	return (length);
+}
+
+int		ft_prn_str(const char *s, int fd)
+{
+	int		l;
+
+	l = 0;
+	while (s[l] != '%' && s[l] != '\0')
+		l++;
+	write(fd, s, l);
+	return (l);
+}
+
+int		ft_printf(const char *format, ...)
+{
+	int			length;
+	t_struct	f_lst;
+
+	length = 0;
+	f_lst.fd = 1;
+	va_start(f_lst.ap, format);
+	while (*format != '\0')
+	{
+		if (*format != '%')
+			length += (f_lst.len = ft_prn_str(format, f_lst.fd));
+		else
+			length += ft_parse(format + 1, &f_lst);
+		format += f_lst.len;
+	}
+	va_end(f_lst.ap);
+	return (length);
 }

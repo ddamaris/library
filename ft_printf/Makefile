@@ -1,83 +1,32 @@
+NAME = ft_printf
+FLAGS = -Wall -Wextra -Werror
+SRCS =  ft_is_flag.c ft_printf.c ft_work_out.c work_out_char.c work_out_d.c work_out_uxo.c ft_strlen.c
+LIB = libftprintf.a
+OBJS = $(SRCS:.c=.o)
 
-GCC = gcc
-
-F = -Wall -Wextra -Werror
-
-NAME = libftprintf.a
-
-OBJECT = ./ft_printf.o \
-	./parse.o \
-	./parse_continue.o \
-	./parse_format.o \
-	./handle_s.o \
-	./handle_c.o \
-	./handle_percent.o \
-	./handle_d.o \
-	./handle_u.o \
-	./handle_x.o \
-	./handle_o.o \
-	./handle_p.o \
-	./handle_f.o \
-	./handle_f_continue.o \
-	./handle_f_more.o \
-
-.PHONY: all clean fclean re
 
 all: $(NAME)
 
-$(NAME): $(OBJECT)
-		ar rc $(NAME) $(OBJECT)
-		ranlib $(NAME)
+$(NAME): $(LIB)
+	gcc $(FLAGS) $(LIB) main.c -o $(NAME)
+
+$(LIB): $(OBJS)
+	ar rc $(LIB) $(OBJS)
+	ranlib $(LIB)
+	@echo "\033[2K\c"
+	@echo "\033[1;34mft_printf\t\033[1;33mCompilation\t\033[0;32m[OK]\033[0m"
+
+%.o:%.c
+	gcc $(FLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJECT)
+	@rm -rf $(OBJS) $(LIB)
+	@echo "\033[1;34mft_printf\t\033[1;33mCleaning obj\t\033[0;32m[OK]\033[0m"
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -f $(NAME)
+	@echo "\033[1;34mft_printf\t\033[1;33mCleaning lib\t\033[0;32m[OK]\033[0m"
 
 re: fclean all
 
-ft_printf.o: ft_printf.c
-	$(GCC) $(F) -c ft_printf.c
-
-parse.o: parse.c
-	$(GCC) $(F) -c parse.c
-
-parse_continue.o: parse_continue.c
-	$(GCC) $(F) -c parse_continue.c
-
-parse_format.o: parse_format.c
-	$(GCC) $(F) -c parse_format.c
-
-handle_s.o: handle_s.c
-	$(GCC) $(F) -c handle_s.c
-
-handle_c.o: handle_c.c
-	$(GCC) $(F) -c handle_c.c
-
-handle_percent.o: handle_percent.c
-	$(GCC) $(F) -c handle_percent.c
-
-handle_d.o: handle_d.c
-	$(GCC) $(F) -c handle_d.c
-
-handle_u.o: handle_u.c
-	$(GCC) $(F) -c handle_u.c
-
-handle_x.o: handle_x.c
-	$(GCC) $(F) -c handle_x.c
-
-handle_o.o: handle_o.c
-	$(GCC) $(F) -c handle_o.c
-
-handle_p.o: handle_p.c
-	$(GCC) $(F) -c handle_p.c
-
-handle_f.o: handle_f.c
-	$(GCC) $(F) -c handle_f.c
-
-handle_f_continue.o: handle_f_continue.c
-	$(GCC) $(F) -c handle_f_continue.c
-
-handle_f_more.o: handle_f_more.c
-	$(GCC) $(F) -c handle_f_more.c
+.PHONY: all clean fclean re
