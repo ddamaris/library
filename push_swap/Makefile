@@ -3,42 +3,50 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Nik <Nik@student.42.fr>                    +#+  +:+       +#+         #
+#    By: ddamaris <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/08/13 01:31:26 by Nik               #+#    #+#              #
-#    Updated: 2019/08/30 21:46:53 by Nik              ###   ########.fr        #
+#    Created: 2020/01/28 17:49:37 by ddamaris          #+#    #+#              #
+#    Updated: 2020/01/28 17:49:54 by ddamaris         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CHECKER=checker
+PUSH_SWAP = push_swap
+CHECKER = checker
+FLAGS = -Wall -Wextra -Werror
 
-PUSH_SWAP=push_swap
+SRCS1 = push_swap.c
+SRCS2 = checker.c
 
-SRCS1=CH/*.c
+OBJS = $(SRCS:.c=.o)
 
-SRCS2=PS/*.c
-
-INCLUDES=libft/libft.a utils/*.c
-
-FLAGS=-Werror -Wextra -Wall -fsanitize=address
+INCL1 = utils/ft_printf/ft_printf.a utils/*.c
+INCLUDES = utils/ft_printf/ft_printf.a utils/get_next_line/g_n_l.a utils/*.c
 
 all: $(NAME)
-	@make -C libft/ all
-	gcc -o $(CHECKER) $(FLAGS) $(SRCS1) $(INCLUDES)
-	gcc -o $(PUSH_SWAP) $(FLAGS) $(SRCS2) $(INCLUDES)
-
+	@make -C utils/ft_printf/ all
+	@make -C utils/get_next_line/ all
+	gcc -o $(PUSH_SWAP) $(FLAGS) $(SRCS1) $(INCLUDES)
+	gcc -o $(CHECKER) $(FLAGS) $(SRCS2) $(INCLUDES)
+	
 clean:
-	@make -C libft/ clean
+	@make -C utils/ft_printf clean
+	@make -C utils/get_next_line clean
 
 fclean: clean
 	/bin/rm -f $(CHECKER)
 	/bin/rm -f $(PUSH_SWAP)
-	@make -C libft/ fclean
+	@make -C utils/ft_printf/ fclean
+	@make -C utils/get_next_line/ fclean
 
 re: fclean all
 
 push_swap:
-	gcc -o $(PUSH_SWAP) $(FLAGS) $(SRCS2) $(INCLUDES)
+	@make -C utils/ft_printf/ all
+	gcc -o $(PUSH_SWAP) $(FLAGS) $(SRCS1) $(INCL1)
 
 checker:
-	gcc -o $(CHECKER) $(FLAGS) $(SRCS1) $(INCLUDES)
+	@make -C utils/ft_printf/ all
+	@make -C utils/get_next_line/ all
+	gcc -o $(CHECKER) $(FLAGS) $(SRCS2) $(INCLUDES)
+
+.PHONY: all clean fclean re
